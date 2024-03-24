@@ -45,6 +45,10 @@ pub mod swns {
         web_service_account.domain = domain;
         Ok(())
     }
+
+    pub fn delete_web_service_account(_ctx: Context<DeleteWebServiceAccount>) -> Result<()> {
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -80,6 +84,18 @@ pub struct UpdateWebServiceAccount<'info> {
     pub authority: Signer<'info>,
     // system program is required to realloc space
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct DeleteWebServiceAccount<'info> {
+    #[account(
+        mut,
+        has_one = authority,
+        close = authority
+    )]
+    pub web_service_account: Account<'info, WebServiceAccount>,
+    #[account(mut)]
+    pub authority: Signer<'info>,
 }
 
 #[account]
